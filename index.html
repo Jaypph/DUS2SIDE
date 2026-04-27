@@ -22,30 +22,59 @@ body.light{
   --shadow:0 10px 30px rgba(0,0,0,.08);
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box;}
 
 body{
   margin:0;
   font-family:Arial, sans-serif;
   background:var(--bg);
   color:var(--text);
-  display:flex;
-  min-height:100vh;
-  transition:.25s;
 }
 
-/* Sidebar */
+/* LOGIN */
+#loginScreen{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.loginBox{
+  background:var(--card);
+  padding:30px;
+  border-radius:16px;
+  width:300px;
+  box-shadow:var(--shadow);
+}
+
+.loginBox input{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:10px;
+  border:none;
+}
+
+.loginBox button{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  background:var(--accent);
+  color:white;
+  font-weight:bold;
+}
+
+/* APP */
+#app{display:none;}
+
 .sidebar{
   width:230px;
   background:var(--card);
   padding:20px;
   position:fixed;
-  top:0;
-  left:0;
   height:100vh;
-  box-shadow:var(--shadow);
 }
 
 .logo{
@@ -64,56 +93,26 @@ body{
   color:var(--text);
   cursor:pointer;
   text-align:left;
-  font-size:16px;
   font-weight:bold;
-  transition:.2s;
 }
 
 .sidebar button:hover{
   background:var(--accent);
   color:white;
-  transform:translateX(5px);
 }
 
-.themeBtn{
-  margin-top:15px;
-  background:var(--accent)!important;
-  color:white!important;
-}
-
-/* Content */
 .content{
   margin-left:230px;
-  width:100%;
   padding:30px;
 }
 
-section{
-  display:none;
-  animation:fade .25s;
-}
+section{display:none;}
+section.active{display:block;}
 
-section.active{
-  display:block;
-}
-
-@keyframes fade{
-  from{
-    opacity:0;
-    transform:translateY(10px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
-}
-
-/* Cards */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:15px;
-  margin-top:20px;
 }
 
 .card{
@@ -122,22 +121,19 @@ section.active{
   padding:22px;
   cursor:pointer;
   box-shadow:var(--shadow);
-  transition:.2s;
 }
 
 .card:hover{
-  transform:translateY(-5px) scale(1.02);
+  transform:scale(1.03);
   background:var(--accent);
   color:white;
 }
 
-/* Detail page */
 .detail{
   background:var(--card);
   padding:25px;
   border-radius:18px;
   box-shadow:var(--shadow);
-  line-height:1.7;
 }
 
 .back{
@@ -148,52 +144,33 @@ section.active{
   background:var(--accent);
   color:white;
   cursor:pointer;
-  font-weight:bold;
 }
 
-/* Game */
-#gameBox{
-  width:100%;
-  max-width:700px;
-  height:250px;
-  background:var(--card);
-  border-radius:16px;
-  position:relative;
-  overflow:hidden;
-  box-shadow:var(--shadow);
-  margin-top:20px;
-}
-
-#player{
-  width:35px;
-  height:35px;
-  background:#ef4444;
-  position:absolute;
-  left:10px;
-  bottom:10px;
-  border-radius:8px;
-  transition:.15s;
-}
-
-/* Mobile */
 @media(max-width:800px){
-  body{
-    flex-direction:column;
-  }
-
-  .sidebar{
-    position:relative;
-    width:100%;
-    height:auto;
-  }
-
-  .content{
-    margin-left:0;
-  }
+  .sidebar{position:relative;width:100%;height:auto;}
+  .content{margin-left:0;}
 }
 </style>
 </head>
+
 <body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="loginBox">
+    <h2>Login til DUS2</h2>
+
+    <input id="user" placeholder="Brugernavn">
+    <input id="pass" type="password" placeholder="Kodeord">
+
+    <button onclick="login()">Log ind</button>
+
+    <p id="error" style="color:red;"></p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
 
 <div class="sidebar">
   <div class="logo">DUS2</div>
@@ -202,57 +179,61 @@ section.active{
   <button onclick="show('aktiviteter')">Aktiviteter</button>
   <button onclick="show('voksne')">Vores Voksne</button>
 
-  <button class="themeBtn" onclick="toggleTheme()">Skift tema</button>
+  <button onclick="toggleTheme()">Skift tema</button>
 </div>
 
 <div class="content">
 
-  <section id="home" class="active">
-    <h1>Velkommen til DUS2</h1>
-    <p>
-      Her finder du aktiviteter, kreativ udfoldelse, teknologi, leg og fællesskab.
-      Klik på <b>Aktiviteter</b> for at udforske mulighederne.
-    </p>
-  </section>
+<section id="home" class="active">
+  <h1>Velkommen til DUS2</h1>
+  <p>Et trygt og traditionelt fritidstilbud.</p>
+</section>
 
-  <section id="aktiviteter">
-    <h1>Aktiviteter</h1>
+<section id="aktiviteter">
+  <h1>Aktiviteter</h1>
 
-    <div class="grid">
-      <div class="card" onclick="openActivity('makerspace')">Makerspace</div>
-      <div class="card" onclick="openActivity('sport')">Sport</div>
-      <div class="card" onclick="openActivity('kreativ')">Kreativitet</div>
-      <div class="card" onclick="openActivity('ps5')">PS5 Gaming</div>
-      <div class="card" onclick="openActivity('ude')">Udendørs</div>
-      <div class="card" onclick="openActivity('inde')">Indendørs</div>
-    </div>
-  </section>
+  <div class="grid">
+    <div class="card" onclick="openActivity('makerspace')">Makerspace</div>
+    <div class="card" onclick="openActivity('sport')">Sport</div>
+    <div class="card" onclick="openActivity('kreativ')">Kreativitet</div>
+    <div class="card" onclick="openActivity('ps5')">PS5 Gaming</div>
+    <div class="card" onclick="openActivity('ude')">Udendørs</div>
+    <div class="card" onclick="openActivity('inde')">Indendørs</div>
+  </div>
+</section>
 
-  <section id="detail">
-    <button class="back" onclick="show('aktiviteter')">← Tilbage</button>
-    <div class="detail" id="detailContent"></div>
-  </section>
+<section id="detail">
+  <button class="back" onclick="show('aktiviteter')">← Tilbage</button>
+  <div class="detail" id="detailContent"></div>
+</section>
 
-  <section id="voksne">
-    <h1>Vores voksne</h1>
+<section id="voksne">
+  <div class="detail">
+    <h1>Vores Voksne</h1>
+    <p>De voksne skaber tryghed, struktur og fællesskab.</p>
+  </div>
+</section>
 
-  </section>
-
-  <section id="detail">
-    <button class="back" onclick="show('aktiviteter')">← Tilbage</button>
-    <div class="detail" id="detailContent"></div>
-  </section>
-
-
-
+</div>
 </div>
 
 <script>
-function show(id){
-  document.querySelectorAll("section").forEach(section=>{
-    section.classList.remove("active");
-  });
 
+function login(){
+  let u = document.getElementById("user").value;
+  let p = document.getElementById("pass").value;
+
+  // 🔑 OPDATERET: kode er nu KUN 1234
+  if(u === "dus2" && p === "1234"){
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("app").style.display = "block";
+  } else {
+    document.getElementById("error").innerText = "Forkert brugernavn eller kodeord";
+  }
+}
+
+function show(id){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
@@ -261,89 +242,20 @@ function toggleTheme(){
 }
 
 function openActivity(type){
+
   const data = {
-    makerspace: `
-      <h2>Makerspace</h2>
-      <p>
-        Makerspace er stedet hvor idéer bliver til virkelighed.
-        Her kan man bygge med elektronik, udforske Arduino,
-        eksperimentere med teknologi og skabe egne projekter.
-      </p>
-      <p>
-        Det er et moderne værksted med klassisk skaberånd:
-        tænke, bygge, teste, forbedre.
-      </p>
-    `,
-    sport: `
-      <h2>Sport</h2>
-      <p>
-        Bevægelse, boldspil og fællesskab.
-        Her er der plads til både konkurrence og sjov.
-      </p>
-    `,
-    kreativ: `
-      <h2>Kreativitet</h2>
-      <p>
-        Tegn, mal, byg og design.
-        Slip fantasien løs og skab noget unikt.
-      </p>
-    `,
-    ps5: `
-      <h2>PS5 Gaming</h2>
-      <p>
-        Gaming med venner, turneringer og masser af hygge.
-      </p>
-    `,
-    ude: `
-      <h2>Udendørs</h2>
-      <p>
-        Frisk luft, leg og aktiviteter udenfor.
-      </p>
-    `,
-    inde: `
-      <h2>Indendørs</h2>
-      <p>
-        Rolige aktiviteter, spil og socialt samvær indendørs.
-      </p>
-    `,
-    voksne: `
-      <h2>Vores Voksne</h2>
-      <img src="img.png"></img>
-      <p>
-        Det gode fællesskab starter hos de voksne
-
-        I DUS 2 er de voksne langt mere end blot opsyn – de er fundamentet for vores fællesskab. Hver dag møder vi børnene med energi, nærvær og en oprigtig ambition om at gøre en positiv forskel. Det er ikke tilfældigt; det er en bevidst tilgang, som bygger på stolte traditioner for pædagogisk kvalitet og relationelt arbejde.
-
-        For os er det afgørende, at DUS 2 opleves som et trygt frirum efter skoledagen – et sted, hvor børnene kan lande, finde ro og være en del af et varmt og inkluderende fællesskab. Vores personale prioriterer nærvær højt og arbejder målrettet for, at alle børn føler sig set, hørt og anerkendt.
-
-        Vi guider – med blik for det enkelte barn
-
-        Uanset om der er behov for støtte til kreative projekter, hjælp til at håndtere konflikter eller blot en voksen at tale med, er vi til stede. Vi tror på, at stærke relationer er nøglen til trivsel. Derfor deltager vi aktivt i børnenes hverdag og hjælper dem med at navigere i sociale fællesskaber, udvikle selvstændighed og vise omsorg for hinanden.
-
-        Et sted man hører til
-
- 
-
-        Den gode stemning er ikke noget, der opstår tilfældigt – den skabes bevidst. Vi balancerer rolige zoner for fordybelse med rum til leg, bevægelse og begejstring. Når de voksne trives og udstråler arbejdsglæde, smitter det – og det er netop denne varme, stabilitet og hjælpsomhed, der kendetegner ånden i vores DUS 2.
-      </p>
-    `
+    makerspace:"<h2>Makerspace</h2><p>3D og kreative projekter.</p>",
+    sport:"<h2>Sport</h2><p>Bevægelse og fællesskab.</p>",
+    kreativ:"<h2>Kreativitet</h2><p>Design og idéer.</p>",
+    ps5:"<h2>PS5 Gaming</h2><p>Gaming i kontrollerede rammer.</p>",
+    ude:"<h2>Udendørs</h2><p>Leg og frisk luft.</p>",
+    inde:"<h2>Indendørs</h2><p>Rolige aktiviteter.</p>"
   };
 
   document.getElementById("detailContent").innerHTML = data[type];
   show("detail");
 }
 
-let x = 10;
-
-function movePlayer(){
-  x += 50;
-
-  if(x > 600){
-    x = 10;
-  }
-
-  document.getElementById("player").style.left = x + "px";
-}
 </script>
 
 </body>
