@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DUS 2 PRO</title>
+
+<style>
+:root{
+  --bg:#0f0f14;
+  --card:#1c1c25;
+  --text:#fff;
+  --accent:#4ade80;
+}
+
+body.light{
+  --bg:#f5f7fb;
+  --card:#fff;
+  --text:#111;
+  --accent:#2563eb;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:220px;
+  background:var(--card);
+  height:100vh;
+  padding:15px;
+  position:fixed;
+}
+
+.sidebar h2{
+  margin-top:0;
+}
+
+.sidebar button{
+  width:100%;
+  margin:5px 0;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  background:transparent;
+  color:var(--text);
+  text-align:left;
+  font-weight:bold;
+}
+
+.sidebar button:hover{
+  background:var(--accent);
+  color:white;
+}
+
+.theme{
+  margin-top:10px;
+  background:var(--accent)!important;
+  color:white!important;
+}
+
+/* CONTENT */
+.content{
+  margin-left:220px;
+  padding:20px;
+  width:100%;
+}
+
+/* SECTIONS */
+section{display:none;}
+section.active{display:block;}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:10px;
+}
+
+/* CARDS */
+.card{
+  background:var(--card);
+  padding:15px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.card:hover{
+  transform:scale(1.03);
+  background:var(--accent);
+  color:white;
+}
+
+/* DETAIL */
+.detail{
+  background:var(--card);
+  padding:20px;
+  border-radius:12px;
+  line-height:1.6;
+}
+
+.back{
+  margin-bottom:10px;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:var(--accent);
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+/* GAME */
+#gameBox{
+  width:100%;
+  max-width:750px;
+  height:260px;
+  background:linear-gradient(#60a5fa,#bfdbfe);
+  position:relative;
+  border-radius:14px;
+  overflow:hidden;
+}
+
+.ground{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:45px;
+  background:#22c55e;
+}
+
+#player{
+  width:35px;
+  height:35px;
+  background:#ef4444;
+  position:absolute;
+  left:60px;
+  bottom:45px;
+  border-radius:8px;
+}
+
+.obstacle{
+  width:30px;
+  height:60px;
+  background:#111;
+  position:absolute;
+  right:-50px;
+  bottom:45px;
+  border-radius:6px;
+}
+
+.power{
+  width:22px;
+  height:22px;
+  background:gold;
+  position:absolute;
+  bottom:95px;
+  border-radius:50%;
+  box-shadow:0 0 10px gold;
+}
+
+.hud{
+  position:absolute;
+  top:10px;
+  left:10px;
+  display:flex;
+  gap:10px;
+  font-weight:bold;
+  color:white;
+}
+
+.badge{
+  background:rgba(0,0,0,.4);
+  padding:6px 10px;
+  border-radius:8px;
+}
+
+.jump{
+  animation:jump .55s ease;
+}
+
+@keyframes jump{
+  0%{bottom:45px;}
+  45%{bottom:150px;}
+  55%{bottom:150px;}
+  100%{bottom:45px;}
+}
+
+/* MOBILE */
+@media(max-width:800px){
+  body{display:block;}
+  .sidebar{position:relative;width:100%;height:auto;}
+  .content{margin-left:0;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h2>DUS 2</h2>
+
+  <button onclick="show('home')">Forside</button>
+  <button onclick="show('aktiviteter')">Aktiviteter</button>
+  <button onclick="show('spil')">Spil</button>
+
+  <button class="theme" onclick="toggleTheme()">Tema</button>
+</div>
+
+<!-- CONTENT -->
+<div class="content>
+
+<!-- HOME -->
+<section id="home" class="active">
+  <h1>Velkommen til DUS 2 PRO</h1>
+  <p>Klik på aktiviteter eller spil for at starte.</p>
+</section>
+
+<!-- AKTIVITETER -->
+<section id="aktiviteter">
+  <h2>Aktiviteter</h2>
+
+  <div class="grid">
+    <div class="card" onclick="openActivity('makerspace')">Makerspace</div>
+    <div class="card" onclick="openActivity('sport')">Sport</div>
+    <div class="card" onclick="openActivity('kreativ')">Kreativitet</div>
+    <div class="card" onclick="openActivity('ps5')">PS5</div>
+    <div class="card" onclick="openActivity('ude')">Udendørs</div>
+    <div class="card" onclick="openActivity('inde')">Indendørs</div>
+  </div>
+</section>
+
+<!-- DETAIL -->
+<section id="detail">
+  <button class="back" onclick="show('aktiviteter')">← Tilbage</button>
+  <div class="detail" id="detailContent"></div>
+</section>
+
+<!-- SPIL -->
+<section id="spil">
+  <h2>🏆 DUS Arcade Pro</h2>
+  <p>Space eller klik = hop</p>
+
+  <div id="gameBox" onclick="jump()">
+
+    <div class="hud">
+      <div class="badge">Score: <span id="score">0</span></div>
+      <div class="badge">Liv: <span id="lives">3</span></div>
+      <div class="badge">Boost: <span id="boost">0</span></div>
+    </div>
+
+    <div id="player"></div>
+    <div id="obstacle" class="obstacle"></div>
+    <div id="power" class="power"></div>
+    <div class="ground"></div>
+
+  </div>
+</section>
+
+</div>
+
+<script>
+
+/* NAV */
+function show(id){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+/* THEME */
+function toggleTheme(){
+  document.body.classList.toggle("light");
+}
+
+/* ACTIVITIES */
+function openActivity(type){
+
+  const data = {
+    makerspace:`<h2>Makerspace</h2><p>3D-print, Arduino og byg-projekter.</p>`,
+    sport:`<h2>Sport</h2><p>Bold og bevægelse.</p>`,
+    kreativ:`<h2>Kreativitet</h2><p>Design og skab.</p>`,
+    ps5:`<h2>PS5</h2><p>Gaming og turneringer.</p>`,
+    ude:`<h2>Udendørs</h2><p>Leg i frisk luft.</p>`,
+    inde:`<h2>Indendørs</h2><p>Brætspil og hygge.</p>`
+  };
+
+  document.getElementById("detailContent").innerHTML = data[type];
+  show("detail");
+}
+
+/* GAME */
+let player=document.getElementById("player");
+let obstacle=document.getElementById("obstacle");
+let power=document.getElementById("power");
+
+let scoreEl=document.getElementById("score");
+let livesEl=document.getElementById("lives");
+let boostEl=document.getElementById("boost");
+
+let score=0,lives=3,boost=0;
+let obstacleX=750,powerX=500;
+let speed=6;
+let alive=true;
+
+function jump(){
+  if(!player.classList.contains("jump")){
+    player.classList.add("jump");
+    setTimeout(()=>player.classList.remove("jump"),550);
+  }
+}
+
+document.addEventListener("keydown",e=>{
+  if(e.code==="Space"){
+    e.preventDefault();
+    jump();
+  }
+});
+
+function loop(){
+  if(!alive) return;
+
+  obstacleX-=speed;
+  powerX-=speed;
+
+  if(obstacleX<-40){
+    obstacleX=750;
+    score++;
+    scoreEl.textContent=score;
+    if(score%5===0)speed+=0.5;
+  }
+
+  if(powerX<-30)powerX=600+Math.random()*300;
+
+  obstacle.style.left=obstacleX+"px";
+  power.style.left=powerX+"px";
+
+  let pb=parseInt(getComputedStyle(player).bottom);
+
+  if(obstacleX>45&&obstacleX<95&&pb<90){
+    lives--;
+    livesEl.textContent=lives;
+    obstacleX=750;
+
+    if(lives<=0){
+      alert("Game Over! Score: "+score);
+      score=0;lives=3;boost=0;speed=6;
+      scoreEl.textContent=0;
+      livesEl.textContent=3;
+      boostEl.textContent=0;
+    }
+  }
+
+  if(powerX>45&&powerX<95&&pb>80){
+    boost++;
+    boostEl.textContent=boost;
+    powerX=800;
+    speed+=0.3;
+  }
+
+  requestAnimationFrame(loop);
+}
+
+loop();
+
+</script>
+
+</body>
+</html>
