@@ -3,24 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DUS 2 PRO</title>
+<title>DUS2</title>
 
 <style>
 :root{
   --bg:#0f0f14;
   --card:#1c1c25;
-  --text:#fff;
+  --text:#ffffff;
   --accent:#4ade80;
+  --shadow:0 10px 30px rgba(0,0,0,.25);
 }
 
 body.light{
   --bg:#f5f7fb;
-  --card:#fff;
-  --text:#111;
+  --card:#ffffff;
+  --text:#111827;
   --accent:#2563eb;
+  --shadow:0 10px 30px rgba(0,0,0,.08);
 }
 
-*{box-sizing:border-box;}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -29,114 +33,135 @@ body{
   color:var(--text);
   display:flex;
   min-height:100vh;
+  transition:.25s;
 }
 
-/* SIDEBAR */
+/* Sidebar */
 .sidebar{
-  width:220px;
+  width:230px;
   background:var(--card);
-  height:100vh;
-  padding:15px;
+  padding:20px;
   position:fixed;
+  top:0;
+  left:0;
+  height:100vh;
+  box-shadow:var(--shadow);
 }
 
-.sidebar h2{
-  margin-top:0;
+.logo{
+  font-size:28px;
+  font-weight:bold;
+  margin-bottom:25px;
 }
 
 .sidebar button{
   width:100%;
-  margin:5px 0;
-  padding:10px;
+  margin:6px 0;
+  padding:12px;
   border:none;
-  border-radius:8px;
-  cursor:pointer;
+  border-radius:10px;
   background:transparent;
   color:var(--text);
+  cursor:pointer;
   text-align:left;
+  font-size:16px;
   font-weight:bold;
+  transition:.2s;
 }
 
 .sidebar button:hover{
   background:var(--accent);
   color:white;
+  transform:translateX(5px);
 }
 
-.theme{
-  margin-top:10px;
+.themeBtn{
+  margin-top:15px;
   background:var(--accent)!important;
   color:white!important;
 }
 
-/* CONTENT */
+/* Content */
 .content{
-  margin-left:220px;
-  padding:20px;
+  margin-left:230px;
   width:100%;
+  padding:30px;
 }
 
-/* SECTIONS */
-section{display:none;}
-section.active{display:block;}
+section{
+  display:none;
+  animation:fade .25s;
+}
 
-/* GRID */
+section.active{
+  display:block;
+}
+
+@keyframes fade{
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+/* Cards */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:10px;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+  margin-top:20px;
 }
 
-/* CARDS */
 .card{
   background:var(--card);
-  padding:15px;
-  border-radius:10px;
+  border-radius:16px;
+  padding:22px;
   cursor:pointer;
+  box-shadow:var(--shadow);
   transition:.2s;
 }
 
 .card:hover{
-  transform:scale(1.03);
+  transform:translateY(-5px) scale(1.02);
   background:var(--accent);
   color:white;
 }
 
-/* DETAIL */
+/* Detail page */
 .detail{
   background:var(--card);
-  padding:20px;
-  border-radius:12px;
-  line-height:1.6;
+  padding:25px;
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  line-height:1.7;
 }
 
 .back{
-  margin-bottom:10px;
-  padding:10px;
+  margin-bottom:15px;
+  padding:10px 14px;
   border:none;
-  border-radius:8px;
+  border-radius:10px;
   background:var(--accent);
   color:white;
   cursor:pointer;
   font-weight:bold;
 }
 
-/* GAME */
+/* Game */
 #gameBox{
   width:100%;
-  max-width:750px;
-  height:260px;
-  background:linear-gradient(#60a5fa,#bfdbfe);
+  max-width:700px;
+  height:250px;
+  background:var(--card);
+  border-radius:16px;
   position:relative;
-  border-radius:14px;
   overflow:hidden;
-}
-
-.ground{
-  position:absolute;
-  bottom:0;
-  width:100%;
-  height:45px;
-  background:#22c55e;
+  box-shadow:var(--shadow);
+  margin-top:20px;
 }
 
 #player{
@@ -144,235 +169,181 @@ section.active{display:block;}
   height:35px;
   background:#ef4444;
   position:absolute;
-  left:60px;
-  bottom:45px;
-  border-radius:8px;
-}
-
-.obstacle{
-  width:30px;
-  height:60px;
-  background:#111;
-  position:absolute;
-  right:-50px;
-  bottom:45px;
-  border-radius:6px;
-}
-
-.power{
-  width:22px;
-  height:22px;
-  background:gold;
-  position:absolute;
-  bottom:95px;
-  border-radius:50%;
-  box-shadow:0 0 10px gold;
-}
-
-.hud{
-  position:absolute;
-  top:10px;
   left:10px;
-  display:flex;
-  gap:10px;
-  font-weight:bold;
-  color:white;
-}
-
-.badge{
-  background:rgba(0,0,0,.4);
-  padding:6px 10px;
+  bottom:10px;
   border-radius:8px;
+  transition:.15s;
 }
 
-.jump{
-  animation:jump .55s ease;
-}
-
-@keyframes jump{
-  0%{bottom:45px;}
-  45%{bottom:150px;}
-  55%{bottom:150px;}
-  100%{bottom:45px;}
-}
-
-/* MOBILE */
+/* Mobile */
 @media(max-width:800px){
-  body{display:block;}
-  .sidebar{position:relative;width:100%;height:auto;}
-  .content{margin-left:0;}
+  body{
+    flex-direction:column;
+  }
+
+  .sidebar{
+    position:relative;
+    width:100%;
+    height:auto;
+  }
+
+  .content{
+    margin-left:0;
+  }
 }
 </style>
 </head>
-
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
-  <h2>DUS 2</h2>
+  <div class="logo">DUS2</div>
 
   <button onclick="show('home')">Forside</button>
   <button onclick="show('aktiviteter')">Aktiviteter</button>
-  <button onclick="show('spil')">Spil</button>
+  <button onclick="show('voksne')">Vores Voksne</button>
 
-  <button class="theme" onclick="toggleTheme()">Tema</button>
+  <button class="themeBtn" onclick="toggleTheme()">Skift tema</button>
 </div>
 
-<!-- CONTENT -->
-<div class="content>
+<div class="content">
 
-<!-- HOME -->
-<section id="home" class="active">
-  <h1>Velkommen til DUS 2 PRO</h1>
-  <p>Klik på aktiviteter eller spil for at starte.</p>
-</section>
+  <section id="home" class="active">
+    <h1>Velkommen til DUS2</h1>
+    <p>
+      Her finder du aktiviteter, kreativ udfoldelse, teknologi, leg og fællesskab.
+      Klik på <b>Aktiviteter</b> for at udforske mulighederne.
+    </p>
+  </section>
 
-<!-- AKTIVITETER -->
-<section id="aktiviteter">
-  <h2>Aktiviteter</h2>
+  <section id="aktiviteter">
+    <h1>Aktiviteter</h1>
 
-  <div class="grid">
-    <div class="card" onclick="openActivity('makerspace')">Makerspace</div>
-    <div class="card" onclick="openActivity('sport')">Sport</div>
-    <div class="card" onclick="openActivity('kreativ')">Kreativitet</div>
-    <div class="card" onclick="openActivity('ps5')">PS5</div>
-    <div class="card" onclick="openActivity('ude')">Udendørs</div>
-    <div class="card" onclick="openActivity('inde')">Indendørs</div>
-  </div>
-</section>
-
-<!-- DETAIL -->
-<section id="detail">
-  <button class="back" onclick="show('aktiviteter')">← Tilbage</button>
-  <div class="detail" id="detailContent"></div>
-</section>
-
-<!-- SPIL -->
-<section id="spil">
-  <h2>🏆 DUS Arcade Pro</h2>
-  <p>Space eller klik = hop</p>
-
-  <div id="gameBox" onclick="jump()">
-
-    <div class="hud">
-      <div class="badge">Score: <span id="score">0</span></div>
-      <div class="badge">Liv: <span id="lives">3</span></div>
-      <div class="badge">Boost: <span id="boost">0</span></div>
+    <div class="grid">
+      <div class="card" onclick="openActivity('makerspace')">Makerspace</div>
+      <div class="card" onclick="openActivity('sport')">Sport</div>
+      <div class="card" onclick="openActivity('kreativ')">Kreativitet</div>
+      <div class="card" onclick="openActivity('ps5')">PS5 Gaming</div>
+      <div class="card" onclick="openActivity('ude')">Udendørs</div>
+      <div class="card" onclick="openActivity('inde')">Indendørs</div>
     </div>
+  </section>
 
-    <div id="player"></div>
-    <div id="obstacle" class="obstacle"></div>
-    <div id="power" class="power"></div>
-    <div class="ground"></div>
+  <section id="detail">
+    <button class="back" onclick="show('aktiviteter')">← Tilbage</button>
+    <div class="detail" id="detailContent"></div>
+  </section>
 
-  </div>
-</section>
+  <section id="voksne">
+    <h1>Vores voksne</h1>
+
+  </section>
+
+  <section id="detail">
+    <button class="back" onclick="show('aktiviteter')">← Tilbage</button>
+    <div class="detail" id="detailContent"></div>
+  </section>
+
+
 
 </div>
 
 <script>
-
-/* NAV */
 function show(id){
-  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll("section").forEach(section=>{
+    section.classList.remove("active");
+  });
+
   document.getElementById(id).classList.add("active");
 }
 
-/* THEME */
 function toggleTheme(){
   document.body.classList.toggle("light");
 }
 
-/* ACTIVITIES */
 function openActivity(type){
-
   const data = {
-    makerspace:`<h2>Makerspace</h2><p>3D-print, Arduino og byg-projekter.</p>`,
-    sport:`<h2>Sport</h2><p>Bold og bevægelse.</p>`,
-    kreativ:`<h2>Kreativitet</h2><p>Design og skab.</p>`,
-    ps5:`<h2>PS5</h2><p>Gaming og turneringer.</p>`,
-    ude:`<h2>Udendørs</h2><p>Leg i frisk luft.</p>`,
-    inde:`<h2>Indendørs</h2><p>Brætspil og hygge.</p>`
+    makerspace: `
+      <h2>Makerspace</h2>
+      <p>
+        Makerspace er stedet hvor idéer bliver til virkelighed.
+        Her kan man bygge med elektronik, udforske Arduino,
+        eksperimentere med teknologi og skabe egne projekter.
+      </p>
+      <p>
+        Det er et moderne værksted med klassisk skaberånd:
+        tænke, bygge, teste, forbedre.
+      </p>
+    `,
+    sport: `
+      <h2>Sport</h2>
+      <p>
+        Bevægelse, boldspil og fællesskab.
+        Her er der plads til både konkurrence og sjov.
+      </p>
+    `,
+    kreativ: `
+      <h2>Kreativitet</h2>
+      <p>
+        Tegn, mal, byg og design.
+        Slip fantasien løs og skab noget unikt.
+      </p>
+    `,
+    ps5: `
+      <h2>PS5 Gaming</h2>
+      <p>
+        Gaming med venner, turneringer og masser af hygge.
+      </p>
+    `,
+    ude: `
+      <h2>Udendørs</h2>
+      <p>
+        Frisk luft, leg og aktiviteter udenfor.
+      </p>
+    `,
+    inde: `
+      <h2>Indendørs</h2>
+      <p>
+        Rolige aktiviteter, spil og socialt samvær indendørs.
+      </p>
+    `,
+    voksne: `
+      <h2>Vores Voksne</h2>
+      <img src="img.png"></img>
+      <p>
+        Det gode fællesskab starter hos de voksne
+
+        I DUS 2 er de voksne langt mere end blot opsyn – de er fundamentet for vores fællesskab. Hver dag møder vi børnene med energi, nærvær og en oprigtig ambition om at gøre en positiv forskel. Det er ikke tilfældigt; det er en bevidst tilgang, som bygger på stolte traditioner for pædagogisk kvalitet og relationelt arbejde.
+
+        For os er det afgørende, at DUS 2 opleves som et trygt frirum efter skoledagen – et sted, hvor børnene kan lande, finde ro og være en del af et varmt og inkluderende fællesskab. Vores personale prioriterer nærvær højt og arbejder målrettet for, at alle børn føler sig set, hørt og anerkendt.
+
+        Vi guider – med blik for det enkelte barn
+
+        Uanset om der er behov for støtte til kreative projekter, hjælp til at håndtere konflikter eller blot en voksen at tale med, er vi til stede. Vi tror på, at stærke relationer er nøglen til trivsel. Derfor deltager vi aktivt i børnenes hverdag og hjælper dem med at navigere i sociale fællesskaber, udvikle selvstændighed og vise omsorg for hinanden.
+
+        Et sted man hører til
+
+ 
+
+        Den gode stemning er ikke noget, der opstår tilfældigt – den skabes bevidst. Vi balancerer rolige zoner for fordybelse med rum til leg, bevægelse og begejstring. Når de voksne trives og udstråler arbejdsglæde, smitter det – og det er netop denne varme, stabilitet og hjælpsomhed, der kendetegner ånden i vores DUS 2.
+      </p>
+    `
   };
 
   document.getElementById("detailContent").innerHTML = data[type];
   show("detail");
 }
 
-/* GAME */
-let player=document.getElementById("player");
-let obstacle=document.getElementById("obstacle");
-let power=document.getElementById("power");
+let x = 10;
 
-let scoreEl=document.getElementById("score");
-let livesEl=document.getElementById("lives");
-let boostEl=document.getElementById("boost");
+function movePlayer(){
+  x += 50;
 
-let score=0,lives=3,boost=0;
-let obstacleX=750,powerX=500;
-let speed=6;
-let alive=true;
-
-function jump(){
-  if(!player.classList.contains("jump")){
-    player.classList.add("jump");
-    setTimeout(()=>player.classList.remove("jump"),550);
+  if(x > 600){
+    x = 10;
   }
+
+  document.getElementById("player").style.left = x + "px";
 }
-
-document.addEventListener("keydown",e=>{
-  if(e.code==="Space"){
-    e.preventDefault();
-    jump();
-  }
-});
-
-function loop(){
-  if(!alive) return;
-
-  obstacleX-=speed;
-  powerX-=speed;
-
-  if(obstacleX<-40){
-    obstacleX=750;
-    score++;
-    scoreEl.textContent=score;
-    if(score%5===0)speed+=0.5;
-  }
-
-  if(powerX<-30)powerX=600+Math.random()*300;
-
-  obstacle.style.left=obstacleX+"px";
-  power.style.left=powerX+"px";
-
-  let pb=parseInt(getComputedStyle(player).bottom);
-
-  if(obstacleX>45&&obstacleX<95&&pb<90){
-    lives--;
-    livesEl.textContent=lives;
-    obstacleX=750;
-
-    if(lives<=0){
-      alert("Game Over! Score: "+score);
-      score=0;lives=3;boost=0;speed=6;
-      scoreEl.textContent=0;
-      livesEl.textContent=3;
-      boostEl.textContent=0;
-    }
-  }
-
-  if(powerX>45&&powerX<95&&pb>80){
-    boost++;
-    boostEl.textContent=boost;
-    powerX=800;
-    speed+=0.3;
-  }
-
-  requestAnimationFrame(loop);
-}
-
-loop();
-
 </script>
 
 </body>
